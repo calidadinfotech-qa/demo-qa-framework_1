@@ -1,82 +1,88 @@
 """
 Buttons Page Object - Elements > Buttons
+Handles interactions with different types of button clicks (double, right, dynamic).
 """
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.action_chains import ActionChains
-from pages.base_page import BasePage
+from selenium.webdriver.common.by import By  # For element location
+from selenium.webdriver.common.action_chains import ActionChains  # For advanced actions like double click
+from pages.base_page import BasePage  # Base class
+from locators.buttons_locators import ButtonsLocators
 
 
 class ButtonsPage(BasePage):
-    """Page Object for Buttons Page"""
+    """Page Object for Buttons Page. Contains locators and actions for button testing."""
     
-    # Locators
-    DOUBLE_CLICK_BUTTON = (By.ID, "doubleClickBtn")
-    RIGHT_CLICK_BUTTON = (By.ID, "rightClickBtn")
-    DYNAMIC_CLICK_BUTTON = (By.XPATH, "//button[text()='Click Me']")
-    DOUBLE_CLICK_MESSAGE = (By.ID, "doubleClickMessage")
-    RIGHT_CLICK_MESSAGE = (By.ID, "rightClickMessage")
-    DYNAMIC_CLICK_MESSAGE = (By.ID, "dynamicClickMessage")
     
     def __init__(self, driver):
-        """Initialize ButtonsPage"""
+        """Initialize ButtonsPage with driver and ActionChains"""
         super().__init__(driver)
+        # ActionChains is needed for double click and context click (right click)
         self.actions = ActionChains(driver)
     
     def navigate_to_buttons(self):
-        """Navigate to buttons page"""
+        """
+        Navigate to the buttons page.
+        """
         from config.config import Config
         self.driver.get(Config.BUTTONS_URL)
         self.logger.info(f"Navigated to buttons page: {Config.BUTTONS_URL}")
     
     def double_click_button(self):
-        """Perform double click on double click button"""
-        element = self.find_element(self.DOUBLE_CLICK_BUTTON)
+        """
+        Perform a double click action on the double click button.
+        """
+        element = self.find_element(ButtonsLocators.DOUBLE_CLICK_BUTTON)
+        # Use ActionChains to perform double click
         self.actions.double_click(element).perform()
         self.logger.info("Performed double click")
     
     def right_click_button(self):
-        """Perform right click on right click button"""
-        element = self.find_element(self.RIGHT_CLICK_BUTTON)
+        """
+        Perform a right click (context click) action.
+        """
+        element = self.find_element(ButtonsLocators.RIGHT_CLICK_BUTTON)
+        # Use ActionChains to perform context click
         self.actions.context_click(element).perform()
         self.logger.info("Performed right click")
     
     def click_dynamic_button(self):
-        """Click on dynamic click button"""
-        self.click(self.DYNAMIC_CLICK_BUTTON)
+        """
+        Click on the dynamic button (simple click).
+        """
+        self.click(ButtonsLocators.DYNAMIC_CLICK_BUTTON)
         self.logger.info("Performed dynamic click")
     
     def get_double_click_message(self):
         """
-        Get double click message
+        Get the success message displayed after double click.
         
         Returns:
-            str: Double click message
+            str: Message text
         """
-        return self.get_text(self.DOUBLE_CLICK_MESSAGE)
+        return self.get_text(ButtonsLocators.DOUBLE_CLICK_MESSAGE)
     
     def get_right_click_message(self):
         """
-        Get right click message
+        Get the success message displayed after right click.
         
         Returns:
-            str: Right click message
+            str: Message text
         """
-        return self.get_text(self.RIGHT_CLICK_MESSAGE)
+        return self.get_text(ButtonsLocators.RIGHT_CLICK_MESSAGE)
     
     def get_dynamic_click_message(self):
         """
-        Get dynamic click message
+        Get the success message displayed after dynamic click.
         
         Returns:
-            str: Dynamic click message
+            str: Message text
         """
-        return self.get_text(self.DYNAMIC_CLICK_MESSAGE)
+        return self.get_text(ButtonsLocators.DYNAMIC_CLICK_MESSAGE)
     
     def is_double_click_message_displayed(self):
         """
-        Check if double click message is displayed
+        Check if double click message is displayed.
         
         Returns:
-            bool: True if message is displayed
+            bool: True if displayed
         """
-        return self.is_displayed(self.DOUBLE_CLICK_MESSAGE)
+        return self.is_displayed(ButtonsLocators.DOUBLE_CLICK_MESSAGE)

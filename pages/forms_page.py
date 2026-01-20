@@ -1,124 +1,119 @@
 """
 Forms Page Object - Forms > Practice Form
+Handles interactions with the Student Registration Form.
 """
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import Select
-from selenium.webdriver.common.keys import Keys
-from pages.base_page import BasePage
+from selenium.webdriver.common.by import By  # Element locator strategy
+from selenium.webdriver.support.ui import Select  # For handling dropdowns (though not currently used as custom elements are handled differently)
+from selenium.webdriver.common.keys import Keys  # For keyboard interactions (e.g., ENTER key)
+from pages.base_page import BasePage  # Base class
+from locators.forms_locators import FormsLocators
 
 
 class FormsPage(BasePage):
-    """Page Object for Practice Form Page"""
+    """Page Object for Practice Form Page. Handles complex form inputs including radio buttons, checkboxes, and date pickers."""
     
-    # Locators
-    FIRST_NAME_INPUT = (By.ID, "firstName")
-    LAST_NAME_INPUT = (By.ID, "lastName")
-    EMAIL_INPUT = (By.ID, "userEmail")
-    GENDER_MALE = (By.CSS_SELECTOR, "label[for='gender-radio-1']")
-    GENDER_FEMALE = (By.CSS_SELECTOR, "label[for='gender-radio-2']")
-    GENDER_OTHER = (By.CSS_SELECTOR, "label[for='gender-radio-3']")
-    MOBILE_INPUT = (By.ID, "userNumber")
-    DATE_OF_BIRTH_INPUT = (By.ID, "dateOfBirthInput")
-    SUBJECTS_INPUT = (By.ID, "subjectsInput")
-    HOBBIES_SPORTS = (By.CSS_SELECTOR, "label[for='hobbies-checkbox-1']")
-    HOBBIES_READING = (By.CSS_SELECTOR, "label[for='hobbies-checkbox-2']")
-    HOBBIES_MUSIC = (By.CSS_SELECTOR, "label[for='hobbies-checkbox-3']")
-    CURRENT_ADDRESS_INPUT = (By.ID, "currentAddress")
-    SUBMIT_BUTTON = (By.ID, "submit")
-    CONFIRMATION_MODAL = (By.CLASS_NAME, "modal-content")
-    CLOSE_MODAL_BUTTON = (By.ID, "closeLargeModal")
     
     def __init__(self, driver):
         """Initialize FormsPage"""
         super().__init__(driver)
     
     def navigate_to_forms(self):
-        """Navigate to practice form page"""
+        """
+        Navigate to practice form page using URL from config.
+        """
         from config.config import Config
         self.driver.get(Config.FORMS_URL)
         self.logger.info(f"Navigated to forms page: {Config.FORMS_URL}")
     
     def enter_first_name(self, first_name):
-        """Enter first name"""
-        self.send_keys(self.FIRST_NAME_INPUT, first_name)
+        """Enter first name into the field"""
+        self.send_keys(FormsLocators.FIRST_NAME_INPUT, first_name)
     
     def enter_last_name(self, last_name):
-        """Enter last name"""
-        self.send_keys(self.LAST_NAME_INPUT, last_name)
+        """Enter last name into the field"""
+        self.send_keys(FormsLocators.LAST_NAME_INPUT, last_name)
     
     def enter_email(self, email):
-        """Enter email"""
-        self.send_keys(self.EMAIL_INPUT, email)
+        """Enter email into the field"""
+        self.send_keys(FormsLocators.EMAIL_INPUT, email)
     
     def select_gender(self, gender):
         """
-        Select gender
+        Select gender radio button based on input string.
         
         Args:
             gender (str): Gender - Male, Female, or Other
         """
         if gender.lower() == "male":
-            self.click(self.GENDER_MALE)
+            self.click(FormsLocators.GENDER_MALE)
         elif gender.lower() == "female":
-            self.click(self.GENDER_FEMALE)
+            self.click(FormsLocators.GENDER_FEMALE)
         else:
-            self.click(self.GENDER_OTHER)
+            self.click(FormsLocators.GENDER_OTHER)
     
     def enter_mobile(self, mobile):
-        """Enter mobile number"""
-        self.send_keys(self.MOBILE_INPUT, mobile)
+        """
+        Enter mobile number. Note: Should be 10 digits.
+        """
+        self.send_keys(FormsLocators.MOBILE_INPUT, mobile)
     
     def enter_date_of_birth(self, date):
         """
-        Enter date of birth
+        Enter date of birth.
+        Uses keyboard shortcuts to select all and replace text, then hit Enter.
         
         Args:
             date (str): Date in format "DD MMM YYYY" (e.g., "15 Jan 1995")
         """
-        self.click(self.DATE_OF_BIRTH_INPUT)
-        element = self.find_element(self.DATE_OF_BIRTH_INPUT)
+        self.click(FormsLocators.DATE_OF_BIRTH_INPUT)  # Focus the element
+        element = self.find_element(FormsLocators.DATE_OF_BIRTH_INPUT)
+        # Select existing text (Ctrl/Cmd + A) - using Control for simplicity, might need Command on Mac if not handled by driver
         element.send_keys(Keys.CONTROL + "a")
-        element.send_keys(date)
-        element.send_keys(Keys.ENTER)
+        element.send_keys(date) # Type new date
+        element.send_keys(Keys.ENTER) # Confirm selection
     
     def enter_subjects(self, subjects):
         """
-        Enter subjects
+        Enter subjects into auto-complete field.
+        Types the subject and hits Enter to select the first match.
         
         Args:
             subjects (str): Subject name
         """
-        element = self.find_element(self.SUBJECTS_INPUT)
+        element = self.find_element(FormsLocators.SUBJECTS_INPUT)
         element.send_keys(subjects)
         element.send_keys(Keys.ENTER)
     
     def select_hobbies(self, hobby):
         """
-        Select hobby
+        Select hobby checkbox based on input string.
         
         Args:
             hobby (str): Hobby - Sports, Reading, or Music
         """
         if hobby.lower() == "sports":
-            self.click(self.HOBBIES_SPORTS)
+            self.click(FormsLocators.HOBBIES_SPORTS)
         elif hobby.lower() == "reading":
-            self.click(self.HOBBIES_READING)
+            self.click(FormsLocators.HOBBIES_READING)
         else:
-            self.click(self.HOBBIES_MUSIC)
+            self.click(FormsLocators.HOBBIES_MUSIC)
     
     def enter_current_address(self, address):
-        """Enter current address"""
-        self.send_keys(self.CURRENT_ADDRESS_INPUT, address)
+        """Enter current address into textarea"""
+        self.send_keys(FormsLocators.CURRENT_ADDRESS_INPUT, address)
     
     def click_submit(self):
-        """Click submit button"""
-        self.scroll_to_element(self.SUBMIT_BUTTON)
-        self.click(self.SUBMIT_BUTTON)
+        """
+        Click submit button.
+        Scrolls to element first to ensure it's not obscured by footer/ads.
+        """
+        self.scroll_to_element(FormsLocators.SUBMIT_BUTTON)
+        self.click(FormsLocators.SUBMIT_BUTTON)
     
     def fill_practice_form(self, first_name, last_name, email, gender, mobile, 
                           date_of_birth, subjects, hobbies, current_address):
         """
-        Fill the complete practice form
+        Wrapper method to fill the complete practice form.
         
         Args:
             first_name (str): First name
@@ -145,9 +140,9 @@ class FormsPage(BasePage):
     
     def is_confirmation_displayed(self):
         """
-        Check if confirmation modal is displayed
+        Check if confirmation modal is displayed after submission.
         
         Returns:
             bool: True if confirmation is displayed
         """
-        return self.is_displayed(self.CONFIRMATION_MODAL)
+        return self.is_displayed(FormsLocators.CONFIRMATION_MODAL)

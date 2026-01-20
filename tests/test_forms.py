@@ -1,28 +1,29 @@
 """
 Practice Form Tests - Forms Section
 """
-import pytest
-from pages.forms_page import FormsPage
-from utils.test_data import TestData
+import pytest  # Import pytest
+from pages.forms_page import FormsPage  # Import Page Object
+from utils.test_data import TestData  # Import Test Data
 
 
-@pytest.mark.forms
+@pytest.mark.forms  # Mark this test as part of the 'forms' suite
 def test_practice_form_submission(driver):
     """
     Test Case: Verify practice form submission
     
     Steps:
     1. Navigate to practice form page
-    2. Fill all required form fields
+    2. Fill all required form fields using test data
     3. Submit the form
     4. Verify confirmation modal is displayed
     """
-    # Arrange
+    # Arrange: Initialize Page Object and get test data
     forms_page = FormsPage(driver)
     test_data = TestData.PRACTICE_FORM_DATA
     
-    # Act
+    # Act: Perform actions
     forms_page.navigate_to_forms()
+    # Fill the form using utility method and data dictionary
     forms_page.fill_practice_form(
         test_data["first_name"],
         test_data["last_name"],
@@ -35,6 +36,6 @@ def test_practice_form_submission(driver):
         test_data["current_address"]
     )
     
-    # Assert
+    # Assert: Verify the result
     assert forms_page.is_confirmation_displayed(), "Confirmation modal should be displayed after form submission"
     print(f"Practice form submitted successfully for {test_data['first_name']} {test_data['last_name']}")

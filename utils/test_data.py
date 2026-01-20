@@ -4,46 +4,46 @@ Test data management for the framework
 
 
 class TestData:
-    """Class containing all test data"""
+    """Class containing all test data used across different test cases"""
     
-    # Login credentials
+    # Login credentials to be used for login tests
     VALID_USER = {
-        "username": "testuser",
-        "password": "Test@123"
+        "username": "testuser",  # Valid username
+        "password": "Test@123"   # Valid password
     }
     
     INVALID_USER = {
-        "username": "invaliduser",
-        "password": "wrongpass"
+        "username": "invaliduser",  # Invalid username for negative testing
+        "password": "wrongpass"     # Invalid password
     }
     
-    # Text Box data
+    # Text Box data for testing the Text Box form
     TEXT_BOX_DATA = {
-        "full_name": "John Doe",
-        "email": "john.doe@example.com",
-        "current_address": "123 Main Street, New York, NY 10001",
-        "permanent_address": "456 Oak Avenue, Los Angeles, CA 90001"
+        "full_name": "John Doe",  # Full name input
+        "email": "john.doe@example.com",  # Email input
+        "current_address": "123 Main Street, New York, NY 10001",  # Current address
+        "permanent_address": "456 Oak Avenue, Los Angeles, CA 90001"  # Permanent address
     }
     
-    # Web Table data
+    # Web Table data for adding a new record in the Web Tables page
     WEB_TABLE_RECORD = {
-        "first_name": "Jane",
-        "last_name": "Smith",
-        "email": "jane.smith@example.com",
-        "age": "30",
-        "salary": "75000",
-        "department": "QA"
+        "first_name": "Jane",  # First name
+        "last_name": "Smith",  # Last name
+        "email": "jane.smith@example.com",  # Email address
+        "age": "30",  # Age
+        "salary": "75000",  # Salary
+        "department": "QA"  # Department
     }
     
-    # Practice Form data
+    # Practice Form data for the comprehensive student registration form
     PRACTICE_FORM_DATA = {
-        "first_name": "Alice",
-        "last_name": "Johnson",
-        "email": "alice.johnson@example.com",
-        "gender": "Female",
-        "mobile": "1234567890",
-        "date_of_birth": "15 Jan 1995",
-        "subjects": "Maths",
-        "hobbies": "Reading",
-        "current_address": "789 Pine Road, Chicago, IL 60601"
+        "first_name": "Alice",  # First name
+        "last_name": "Johnson",  # Last name
+        "email": "alice.johnson@example.com",  # Email
+        "gender": "Female",  # Gender (should match radio button value)
+        "mobile": "1234567890",  # Mobile number (10 digits)
+        "date_of_birth": "15 Jan 1995",  # Date of birth
+        "subjects": "Maths",  # Subjects to select
+        "hobbies": "Reading",  # Hobbies to check
+        "current_address": "789 Pine Road, Chicago, IL 60601"  # Current address
     }
